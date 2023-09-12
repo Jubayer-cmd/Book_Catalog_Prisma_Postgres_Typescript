@@ -2,13 +2,6 @@ import { PrismaClient, User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const insertIntoDB = async (data: User): Promise<User> => {
-  const result = await prisma.user.create({
-    data,
-  });
-  return result;
-};
-
 const getAllFromDb = async (): Promise<User[]> => {
   const result = await prisma.user.findMany();
   return result;
@@ -21,6 +14,18 @@ const getUserById = async (id: string): Promise<User | null> => {
     },
   });
   return result;
+};
+
+const getSingleUser = async (
+  id: string
+): Promise<Omit<User, "password"> | {}> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  const { password, ...rest } = user || {};
+  return rest;
 };
 
 const updateIntoDB = async (
@@ -46,9 +51,9 @@ const deleteFromDB = async (id: string): Promise<User> => {
 };
 
 export const userService = {
-  insertIntoDB,
   getAllFromDb,
   getUserById,
   updateIntoDB,
   deleteFromDB,
+  getSingleUser,
 };
