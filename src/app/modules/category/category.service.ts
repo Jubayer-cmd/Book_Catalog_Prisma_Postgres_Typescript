@@ -1,6 +1,5 @@
-import { Category, PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Category } from "@prisma/client";
+import prisma from "../../../utils/prisma";
 
 const insertIntoDB = async (data: Category): Promise<Category> => {
   const result = await prisma.category.create({

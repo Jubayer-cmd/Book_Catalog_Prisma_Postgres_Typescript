@@ -1,15 +1,14 @@
-import { Book, Prisma, PrismaClient } from "@prisma/client";
+import { Book, Prisma } from "@prisma/client";
 import { IGenericResponse } from "../../../interface/common";
 import { IPaginationOptions } from "../../../interface/pagination";
 import { paginationHelpers } from "../../../utils/paginationHelper";
+import prisma from "../../../utils/prisma";
 import {
   IBookFilterRequest,
   bookRelationalFields,
   bookRelationalFieldsMapper,
   bookSearchableFields,
 } from "./book.constants";
-
-const prisma = new PrismaClient();
 
 const insertIntoDB = async (data: Book): Promise<Book> => {
   const result = await prisma.book.create({
