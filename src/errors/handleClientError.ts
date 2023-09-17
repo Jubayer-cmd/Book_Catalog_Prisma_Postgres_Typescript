@@ -14,6 +14,16 @@ const handleClientError = (error: Prisma.PrismaClientKnownRequestError) => {
         message,
       },
     ];
+  } else if (error.code === "P2002") {
+    if (error.message.includes("Unique()` invocation:")) {
+      message = "Email already exists";
+      errors = [
+        {
+          path: "",
+          message,
+        },
+      ];
+    }
   } else if (error.code === "P2003") {
     if (error.message.includes("delete()` invocation:")) {
       message = "Delete failed";

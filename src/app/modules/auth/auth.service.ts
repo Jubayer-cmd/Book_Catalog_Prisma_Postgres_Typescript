@@ -4,6 +4,7 @@ import { Secret } from "jsonwebtoken";
 import { User } from "@prisma/client";
 import config from "../../../config/config";
 
+import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import { jwtHelpers } from "../../../utils/jwtHelpers";
 import prisma from "../../../utils/prisma";
@@ -53,11 +54,9 @@ const loginUserService = async (
   payload: ILoginUser
 ): Promise<ILoginUserResponse> => {
   const { email, password } = payload;
-
   const isUserExist = await getByEmailFromDB(payload?.email);
-
   if (!isUserExist) {
-    throw new ApiError(404, "User does not exist");
+    throw new ApiError(httpStatus.BAD_REQUEST, "User does not exist");
   }
 
   if (
